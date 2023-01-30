@@ -27,8 +27,8 @@
   </div>
   <!-- <button type="submit" class="btn btn-primary" style= " margin: 20px;">Submit</button> -->
 </form>
-<!-- 
-    <a href="#" class="btn btn-primary">Create</a> -->
+
+    <a href="{{route('posts.index')}}" class="btn btn-primary">Back</a>
   </div>
   <!-- <div class="card-footer text-muted">
     2 days ago

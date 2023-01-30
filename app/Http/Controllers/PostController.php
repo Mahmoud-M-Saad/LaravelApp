@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 
+// let's start Day 02
 class PostController extends Controller
 {
     //start codeing
@@ -12,36 +14,37 @@ class PostController extends Controller
     public function index()
     {  # code...
 
-        $UserPosts =[ 
-            [
-            'id' => 1 ,
-            'title'=> 'Laravel',
-            'description' =>'This is your description',
-            'posted_by' => 'Mahmoud',
-            'created_at' => '2022-01-29 19:10:08'
-            ],
-            [
-            'id' => 2,
-            'title'=> 'JS',
-            'description' =>'This is your description',
-            'posted_by' => 'Hassan',
-            'created_at' => '2022-01-30 18:20:18'
-            ],
-            [
-                'id' => 3,
-                'title'=> 'Node.JS',
-                'description' =>'This is your description',
-                'posted_by' => 'Diso',
-                'created_at' => '2022-01-30 18:20:18'
-            ],
-            [
-                'id' => 4,
-                'title'=> 'Html',
-                'description' =>'This is your description',
-                'posted_by' => 'Ali',
-                'created_at' => '2022-01-30 18:20:18'
-                ]
-        ];
+        $UserPosts = Post::all(); ////step 2 , first make use of it in global scope (if you choose it from suggestion it will created automatically )
+        // [ 
+        //     [
+        //     'id' => 1 ,
+        //     'title'=> 'Laravel',
+        //     'description' =>'This is your description',
+        //     'posted_by' => 'Mahmoud',
+        //     'created_at' => '2022-01-29 19:10:08'
+        //     ],
+        //     [
+        //     'id' => 2,
+        //     'title'=> 'JS',
+        //     'description' =>'This is your description',
+        //     'posted_by' => 'Hassan',
+        //     'created_at' => '2022-01-30 18:20:18'
+        //     ],
+        //     [
+        //         'id' => 3,
+        //         'title'=> 'Node.JS',
+        //         'description' =>'This is your description',
+        //         'posted_by' => 'Diso',
+        //         'created_at' => '2022-01-30 18:20:18'
+        //     ],
+        //     [
+        //         'id' => 4,
+        //         'title'=> 'Html',
+        //         'description' =>'This is your description',
+        //         'posted_by' => 'Ali',
+        //         'created_at' => '2022-01-30 18:20:18'
+        //     ]
+        // ]
 
 
 

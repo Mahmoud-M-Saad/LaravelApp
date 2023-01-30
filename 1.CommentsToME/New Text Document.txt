@@ -1,1 +1,3 @@
-php artisan make:controller PostController //to create controller from cmd
+1.php artisan make:controller PostController //to create controller from cmd
+2.https://laravel.com/docs/9.x/migrations#available-column-types //for DB types
+3.https://laravel.com/docs/9.x/eloquent-serialization#main-content //for modification on table col insert,select, ...
