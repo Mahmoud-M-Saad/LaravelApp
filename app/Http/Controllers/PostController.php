@@ -3,141 +3,101 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-// let's start Day 02
 class PostController extends Controller
-{
-    //start codeing
-
-   
+{   
+    //1.index to display all records
     public function index()
-    {  # code...
-
-        $UserPosts = Post::all(); ////step 2 , first make use of it in global scope (if you choose it from suggestion it will created automatically )
-        // [ 
-        //     [
-        //     'id' => 1 ,
-        //     'title'=> 'Laravel',
-        //     'description' =>'This is your description',
-        //     'posted_by' => 'Mahmoud',
-        //     'created_at' => '2022-01-29 19:10:08'
-        //     ],
-        //     [
-        //     'id' => 2,
-        //     'title'=> 'JS',
-        //     'description' =>'This is your description',
-        //     'posted_by' => 'Hassan',
-        //     'created_at' => '2022-01-30 18:20:18'
-        //     ],
-        //     [
-        //         'id' => 3,
-        //         'title'=> 'Node.JS',
-        //         'description' =>'This is your description',
-        //         'posted_by' => 'Diso',
-        //         'created_at' => '2022-01-30 18:20:18'
-        //     ],
-        //     [
-        //         'id' => 4,
-        //         'title'=> 'Html',
-        //         'description' =>'This is your description',
-        //         'posted_by' => 'Ali',
-        //         'created_at' => '2022-01-30 18:20:18'
-        //     ]
-        // ]
-
-
-
-
+    {  
+        $UserPosts = Post::all(); //step 2, first make 'use' of it in global scope (if you choose it from suggestion it will created automatically )
+     
         return view('posts.index',[
             'posts' => $UserPosts
         ]);
-        // return "Welcome to your App sir";
     }
-
+    //2.(a)create to display adding new record page
     public function create()
     {
-        # code...
-
-        return view(view: 'posts.create');
-        // return "Welcome to your App sir";
+        $users = User::get();
+        return view('posts.create' ,[
+'users'=> $users, 
+        ]);
     }
 
-    public function show($Id)
+    //3.(b-saving a-2 step)Store to save this new record
+    public function store()
     {
-        # code...
-        $UserPosts =[ 
-            [
-            'id' => 1 ,
-            'title'=> 'Laravel',
-            'description' =>'This is your description',
-            'posted_by' => 'Mahmoud',
-            'created_at' => '2022-01-29 19:10:08'
-            ],
-            [
-            'id' => 2,
-            'title'=> 'Node.JS',
-            'description' =>'This is your description',
-            'posted_by' => 'Hassan',
-            'created_at' => '2022-01-30 18:20:18'
-            ],
-            [
-                'id' => 3,
-                'title'=> 'Node.JS',
-                'description' =>'This is your description',
-                'posted_by' => 'Diso',
-                'created_at' => '2022-01-30 18:20:18'
-            ],
-            [
-                'id' => 4,
-                'title'=> 'Node.JS',
-                'description' =>'This is your description',
-                'posted_by' => 'Ali',
-                'created_at' => '2022-01-30 18:20:18'
-                ]
-        ];
-        $postone=[];
-        foreach($UserPosts as $post){
-                    if ($post['id']==$Id){
-                    $postone = $post;
-                    }
-                }
-    
-   
-   
+        //step 1: get me the form submission data...
+            //WAY (1) of making this which get all & then choose each part
+            $data = request()->all(); //insted of using $_POST 
+            $title = $data['title'];
+            $description = $data['description'];
+            $userid = $data['posted_by'];
 
+            // //WAY (2) of making this which get the specific part you need only
+            // $title = request()->title;
+            // $description = request()->description;
 
+            // //WAY (3)
+            // $data = $request()->all(); //insted of using $_POST 
+            // $title = $data['title'];
+            // $description = $data['description']; 
+            //and in store(Request $request)
 
-    //     // $x=[];
-    //     // 
-    //     // $Id;
-        return view('posts.show'
-        ,[
-            'post' => $postone
-        ]
-    );
-           
-    //         // 'post' => $x
-    //     ]);
-    //     // return "Welcome to your App sir";
+        //step 2: store(save) the form data in DB... 
+        Post::create([
+            'title' => $title,
+            'description'=> $description,
+            'user_id'=>$userid,
+        ]);
+        return to_route(route: 'posts.index');
+
     }
     
 
 
+    //4.show to display specific record using id
+    public function show($postId)
+    {
+        //$UserPost = Post::where('id',$postId)->first(); //use for more than conditions
+        $UserPost = Post::find($postId); //get from DB this specific record
+       
+        //to return this '$UserPost' record's value to this 'posts.show' page
+        return view('posts.show',[
+            'post' => $UserPost
+        ]);
+    }
 
+    //5.(a)edit to edit specific record using id
+    public function edit($postId)
+    {
+        $UserPost = Post::find($postId); //get from DB this specific record
+        return view('posts.edit',[
+            'post' => $UserPost
+        ]);
+    }
 
+    //6.(b-saving a-5 step)update to save this specific record using id
+    public function update()
+    {
+        //smae as store (step-3)
+            $data = request()->all(); //insted of using $_POST 
+            $title = $data['title'];
+            $description = $data['description'];
+            
 
+        //step 2: store(save) the form data in DB... 
+        Post::create([
+            'title' => $title,
+            'description'=> $description,
+        ]);
+        return to_route(route: 'posts.index');
+    }
 
+    //7.destroy to delete specific record using id
 
-
-
-
-
-
-
-
-
-
-
-
+    
+    
 }
