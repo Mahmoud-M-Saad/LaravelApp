@@ -7,7 +7,7 @@
     </div>
     <div class="card-body">
         <form action="/posts" method="POST">
-            @csrf
+            
             <div
                 style="border-radius:20px; border:2px solid #007bff; margin: 10px; padding:20px; ">
                 <div class="form-group">

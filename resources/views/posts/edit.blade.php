@@ -7,7 +7,9 @@
     </div>
     <div class="card-body">
 
-        <form action="/posts/{post}" method="PUT" >
+        <form action="/posts/{post}" method="POST" >
+        @csrf
+        @method('PUT')
             <div style="border-radius:20px; border:2px solid #007bff; margin: 10px; padding:20px; ">
                 <div class="form-group">
                     Title :<input type="text" class="form-control" value="{{$post['title']}}">

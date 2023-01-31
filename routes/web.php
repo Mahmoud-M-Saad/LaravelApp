@@ -38,3 +38,11 @@ Route::get('/posts/{post}/edit',[PostController::class, 'edit'])->name(name:'pos
 Route::PUT('/posts/{post}',[PostController::class, 'update'])->name(name:'posts.update');
 
 //7.destroy to delete specific record using id
+Route::delete('/posts/{post}',[PostController::class , 'destroy'])->name(name: 'posts.destroy');
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

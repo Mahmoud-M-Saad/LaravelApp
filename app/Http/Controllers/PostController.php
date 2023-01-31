@@ -22,7 +22,7 @@ class PostController extends Controller
     {
         $users = User::get();
         return view('posts.create' ,[
-'users'=> $users, 
+            'users'=> $users, 
         ]);
     }
 
@@ -73,31 +73,47 @@ class PostController extends Controller
     //5.(a)edit to edit specific record using id
     public function edit($postId)
     {
-        $UserPost = Post::find($postId); //get from DB this specific record
+        //get from DB this specific record
+        $UserPost = Post::find($postId); 
         return view('posts.edit',[
             'post' => $UserPost
         ]);
     }
 
     //6.(b-saving a-5 step)update to save this specific record using id
-    public function update()
+    public function update(User $postId)
     {
-        //smae as store (step-3)
-            $data = request()->all(); //insted of using $_POST 
-            $title = $data['title'];
-            $description = $data['description'];
-            
+        // //smae as store (step-3)
+        // $data = request()->all(); //insted of using $_POST 
+        // $title = $data['title'];
+        // $description = $data['description'];
+        // $userid = $data['posted_by'];
 
+        // $data = request()->all(); 
+        //             $title = $data['title'];
+        //     $description = $data['description'];
+        //     $userid = $data['posted_by'];
+
+
+
+        $title = request()->title;
+        $description = request()->description;
+        $userid = request()->userid;
         //step 2: store(save) the form data in DB... 
-        Post::create([
+        $postId -> update([
             'title' => $title,
             'description'=> $description,
+            'user_id'=>$userid,
         ]);
         return to_route(route: 'posts.index');
     }
 
     //7.destroy to delete specific record using id
-
-    
-    
+    public function destroy($postId)
+    {
+        $UserPost = Post::find($postId); 
+        
+        $UserPost -> delete();
+        return to_route(route: 'posts.index');
+    }
 }
