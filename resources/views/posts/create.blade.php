@@ -12,6 +12,9 @@
                 style="border-radius:20px; border:2px solid #007bff; margin: 10px; padding:20px; ">
                 <div class="form-group">
                     Title :<input name="title" type="text" class="form-control" placeholder="Title...">
+                    @error('title')
+    <div class="alert alert-danger" style="height: 28px; padding:2px; margin-top:3px;">{{ $message }}</div>
+@enderror
                 </div>
                 <div class="form-group ">
                     Description :
@@ -20,6 +23,9 @@
                         class="form-control"
                         rows="3"
                         placeholder="Description..."></textarea>
+                        @error('description')
+    <div class="alert alert-danger" style="height: 28px; padding:2px; margin-top:3px;">{{ $message }}</div>
+@enderror
                 </div>
 
                 <div class="form-group">
@@ -32,7 +38,7 @@
                     </select>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" class="btn btn-primary"> + Add</button>
         </form>
     </div>
 </div>

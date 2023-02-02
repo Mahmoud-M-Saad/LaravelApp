@@ -37,7 +37,7 @@ Route::get('/posts/{post}',[PostController::class, 'show'])->name(name:'posts.sh
 Route::get('/posts/{post}/edit',[PostController::class, 'edit'])->name(name:'posts.edit');
 
 //6.(b-saving a-5 step)update to save this specific record using id
-Route::PUT('/posts/{post}',[PostController::class, 'update'])->name(name:'posts.update');
+Route::put('/posts/{post}',[PostController::class, 'update'])->name(name:'posts.update');
 
 //7.destroy to delete specific record using id
 Route::delete('/posts/{post}',[PostController::class , 'destroy'])->name(name: 'posts.destroy');
