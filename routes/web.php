@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PostController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::group(['middleware'=>['auth']],function(){
 //1.index to display all records
 Route::get('/posts',[PostController::class, 'index'])->name(name:'posts.index');
 
@@ -39,10 +41,11 @@ Route::PUT('/posts/{post}',[PostController::class, 'update'])->name(name:'posts.
 
 //7.destroy to delete specific record using id
 Route::delete('/posts/{post}',[PostController::class , 'destroy'])->name(name: 'posts.destroy');
+
+});
+
+
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

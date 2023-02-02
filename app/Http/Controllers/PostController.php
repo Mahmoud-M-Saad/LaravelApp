@@ -73,9 +73,10 @@ class PostController extends Controller
     //5.(a)edit to edit specific record using id
     public function edit($postId)
     {
-        //get from DB this specific record
-        $UserPost = Post::find($postId); 
+        $users = User::get();
+        $UserPost = Post::find($postId);
         return view('posts.edit',[
+            'users'=> $users, 
             'post' => $UserPost
         ]);
     }
@@ -93,8 +94,6 @@ class PostController extends Controller
         //             $title = $data['title'];
         //     $description = $data['description'];
         //     $userid = $data['posted_by'];
-
-
 
         $title = request()->title;
         $description = request()->description;

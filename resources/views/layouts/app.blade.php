@@ -38,8 +38,8 @@
             class="navbar navbar-expand-lg navbar-dark bg-primary"
             style="padding-left:15px;padding-right:15px;">
             <a class="navbar-brand">
-            <a class="navbar-brand" href="{{ url('/home') }}">
-                    {{ config('app.name', 'Laravel') }}
+            <a class="navbar-brand" href="{{ url('/posts') }}">
+                    {{ config('app.name', 'ViewerSystem.com') }}
                 </a>
                 <b></b>
             </a>

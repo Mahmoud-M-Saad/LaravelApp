@@ -18,7 +18,12 @@
                     Description :<textarea class="form-control" rows="3">{{$post['description']}}</textarea>
                 </div>
                 <div class="form-group">
-                    Poster creator :<input type="text" class="form-control" value="{{$post['posted_by']}}">
+                    Poster creator :<select name="posted_by" class="form-control">
+                        @foreach($users as $user)
+                        <option value='{{$user->id}}'>{{$user->name}}</option>
+
+                        @endforeach
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Save editing</button>
             </div>
