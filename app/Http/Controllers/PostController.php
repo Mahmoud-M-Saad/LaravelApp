@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -13,9 +14,27 @@ class PostController extends Controller
     public function index()
     {  
         $UserPosts = Post::all(); //step 2, first make 'use' of it in global scope (if you choose it from suggestion it will created automatically )
-     
+
+        //Paginating
+        $posts = Post::paginate(15);
+        // $users = User::where('votes', '>', 100)->paginate(15);
+
+        // -------trying to change time formate--------------- 
+        // $creationTime = $UserPosts['created_at'];
+        // $creationTime = $UserPosts->created_at;
+        // Carbon::createFromFormat('Y-m-d H:i:s', $UserPosts->created_at)->format('m-d-Y');
+
+        // $UserPosts['created_at']=$newCreationTime;
+        // $creationTime = Post::where('created_at')->get();
+        // $createdAt = Carbon::createFromFormat('Y-m-d H:i:s', $creationTime)->format('l jS \of F Y h:i:s A');
+        // $UserPosts['created_at']=$createdAt;
+
+        // $createdAt = Carbon::parse($UserPosts['created_at']);
+        // $suborder['payment_date'] = $createdAt->format('l jS \of F Y h:i:s A');
+        // dd($UserPosts);
+        //--------------------------------------------------------
         return view('posts.index',[
-            'posts' => $UserPosts
+            'posts' => $UserPosts            
         ]);
     }
     //2.(a)create to display adding new record page
