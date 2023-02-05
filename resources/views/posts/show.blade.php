@@ -78,7 +78,8 @@
                 <p class="mb-0 text-danger">
                     {{ $error }}
         </p>
-        @endforeach @endif --}} @foreach ($comments as $comment)
+        @endforeach @endif --}} 
+        @foreach ($comments as $comment)
         <div class="card bg-light mt-2">
             <div class="card-body">
                 <b>

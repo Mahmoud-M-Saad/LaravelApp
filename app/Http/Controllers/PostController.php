@@ -10,10 +10,23 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Http\Request;
 class PostController extends Controller
 {   
+    // use Sluggable;
+    // public function sluggable(){
+    //     return [
+    //         'slug' => [
+    //              'source'             => 'title',
+    //              'separator'          => '-',
+    //              'unique'             => true,
+    //              'onUpdate'           => true,
+    //              'includeTrashed'     => false,
+    //         ]
+    //     ];
+    // }
 
     public function index()
     {         

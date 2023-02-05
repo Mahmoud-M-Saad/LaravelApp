@@ -4,6 +4,7 @@ use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,3 +34,10 @@ Route::delete('/posts/comments/{comment}',[CommentController::class , 'destroy']
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//github
+Route::get('/auth/redirect', function(){return Socialite::driver('github')->redirect();});
+Route::get('/auth/callback', function(){$user = Socialite::driver('github')->user();});
+//gmail
+Route::get('auth/google', [LoginController::class, 'redirectToGoogle']);
+Route::get('auth/google/callback', [LoginController::class, 'handleGoogleCallback']);
