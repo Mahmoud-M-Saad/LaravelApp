@@ -5,19 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {   
     //1.index to display all records
     public function index()
-    {  
-        $UserPosts = Post::all(); //step 2, first make 'use' of it in global scope (if you choose it from suggestion it will created automatically )
-
-        //Paginating
-        $posts = Post::paginate(15);
-        // $users = User::where('votes', '>', 100)->paginate(15);
+    {         
+        $UserPosts = Post::paginate(2);
+        Paginator::useBootstrapFour();
 
         // -------trying to change time formate--------------- 
         // $creationTime = $UserPosts['created_at'];

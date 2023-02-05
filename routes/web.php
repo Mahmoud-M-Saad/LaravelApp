@@ -1,51 +1,30 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Auth;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::group(['middleware'=>['auth']],function(){
-//1.index to display all records
-Route::get('/posts',[PostController::class, 'index'])->name(name:'posts.index');
 
-//2.(a)create to display adding new record page
-Route::get('/posts/create',[PostController::class, 'create'])->name(name:'posts.create');
+    Route::get('/posts',[PostController::class, 'index'])->name(name:'posts.index');
 
-//3.(b-saving a-2 step)Store to save this new record
-Route::post('/posts',[PostController::class, 'store'])->name(name:'posts.store');
+    Route::get('/posts/create',[PostController::class, 'create'])->name(name:'posts.create');
 
-//4.show to display specific record using id
-Route::get('/posts/{post}',[PostController::class, 'show'])->name(name:'posts.show');
+    Route::post('/posts',[PostController::class, 'store'])->name(name:'posts.store');
 
-//5.(a)edit to edit specific record using id
-Route::get('/posts/{post}/edit',[PostController::class, 'edit'])->name(name:'posts.edit');
+    Route::get('/posts/{post}',[PostController::class, 'show'])->name(name:'posts.show');
 
-//6.(b-saving a-5 step)update to save this specific record using id
-Route::put('/posts/{post}',[PostController::class, 'update'])->name(name:'posts.update');
+    Route::get('/posts/{post}/edit',[PostController::class, 'edit'])->name(name:'posts.edit');
 
-//7.destroy to delete specific record using id
-Route::delete('/posts/{post}',[PostController::class , 'destroy'])->name(name: 'posts.destroy');
+    Route::put('/posts/{post}',[PostController::class, 'update'])->name(name:'posts.update');
+
+    Route::delete('/posts/{post}',[PostController::class , 'destroy'])->name(name: 'posts.destroy');
 
 });
 
-
 Auth::routes();
-
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
