@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Post extends Model
 {
@@ -12,6 +13,7 @@ class Post extends Model
     protected $fillable =[
         'title',
         'description',
+        'image',
         'user_id',
     ];
 
@@ -19,4 +21,17 @@ class Post extends Model
     {
         return $this->belongsTo(related: User::class);
     }
+
+    public function comments(): MorphMany
+    {
+        return $this-> morphMany(Comment::class, 'commentable');
+
+    }
+
+    // public function comments()
+    // {
+    //     return $this->hasMany(Comment::class);
+    // }
+
+
 }

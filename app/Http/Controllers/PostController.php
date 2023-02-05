@@ -1,197 +1,132 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
+use App\Models\Postimage;
 use App\Http\Requests\StorePostRequest;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Http\Request;
-
 class PostController extends Controller
 {   
-    //1.index to display all records
+
     public function index()
     {         
-        $UserPosts = Post::paginate(2);
+        $UserPosts = Post::paginate(6);
         Paginator::useBootstrapFour();
 
-        // -------trying to change time formate--------------- 
-        // $creationTime = $UserPosts['created_at'];
-        // $creationTime = $UserPosts->created_at;
-        // Carbon::createFromFormat('Y-m-d H:i:s', $UserPosts->created_at)->format('m-d-Y');
-
-        // $UserPosts['created_at']=$newCreationTime;
-        // $creationTime = Post::where('created_at')->get();
-        // $createdAt = Carbon::createFromFormat('Y-m-d H:i:s', $creationTime)->format('l jS \of F Y h:i:s A');
-        // $UserPosts['created_at']=$createdAt;
-
-        // $createdAt = Carbon::parse($UserPosts['created_at']);
-        // $suborder['payment_date'] = $createdAt->format('l jS \of F Y h:i:s A');
-        // dd($UserPosts);
-        //--------------------------------------------------------
         return view('posts.index',[
-            'posts' => $UserPosts            
+            'posts' => $UserPosts             
         ]);
     }
-    //2.(a)create to display adding new record page
+
     public function create()
     {
         $users = User::get();
+
         return view('posts.create' ,[
             'users'=> $users, 
         ]);
     }
 
-    //3.(b-saving a-2 step)Store to save this new record
     public function store(StorePostRequest $request)
     {
-
        $request->validate([
             'title'=>['unique:posts,title'],
         ]);
 
+        $data = request()->all();
+        $title = $data['title'];
+        $description = $data['description'];
+        $userid = $data['posted_by'];
+        $image=$data['image'];
 
-
-
-        //step 1: get me the form submission data...
-            //WAY (1) of making this which get all & then choose each part
-            $data = request()->all(); //insted of using $_POST 
-            $title = $data['title'];
-            $description = $data['description'];
-            $userid = $data['posted_by'];
-
-            // //WAY (2) of making this which get the specific part you need only
-            // $title = request()->title;
-            // $description = request()->description;
-
-            // //WAY (3)
-            // $data = $request()->all(); //insted of using $_POST 
-            // $title = $data['title'];
-            // $description = $data['description']; 
-            //and in store(Request $request)
-
-        //step 2: store(save) the form data in DB... 
+        //trial form img
+        // $file = request()->file('image')->store('image');
+        // $postImage = $request->file('image');
+        //     $file = $postImage->store('images');
+        // $image_path = null;
+        // if($request->hasFile('image')) {
+        //     $postImage = $request->file('image');
+        //     $image_path = $postImage->store('images');
+        // }
+        // if($request->file('image')){
+        //     $file= $request->file('image');
+        //     $filename = $file->store('images');
+        //     $data['image']= $filename;
+        // }
+        
         Post::create([
             'title' => $title,
             'description'=> $description,
             'user_id'=>$userid,
+            'image'=>$image,   
         ]);
+
         return to_route(route: 'posts.index');
-
     }
-    
 
-
-    //4.show to display specific record using id
     public function show($postId)
     {
-        //$UserPost = Post::where('id',$postId)->first(); //use for more than conditions
         $UserPost = Post::find($postId); //get from DB this specific record
+        $UserComment = Comment::where('post_id', $postId)->get();
        
-        //to return this '$UserPost' record's value to this 'posts.show' page
         return view('posts.show',[
-            'post' => $UserPost
+            'post' => $UserPost,
+            'comments' => $UserComment ,
         ]);
     }
 
-    //5.(a)edit to edit specific record using id
     public function edit($postId)
     {
-        
         $users = User::get();
         $UserPost = Post::find($postId);
+
         return view('posts.edit',[
             'users'=> $users, 
             'post' => $UserPost
         ]);
     }
 
-    //6.(b-saving a-5 step)update to save this specific record using id
     public function update(StorePostRequest $request ,$postId)
     {
-
-       
-        
-
         $UserPost = Post::find($postId);
-        
-        // if(!$UserPost){
-        //     return to_route(route: 'posts.index');
-        // }else{
-        //     $postId->update([
-        //         'title'=>request()->title,
-        //         'description'=>request()->description,
-        //         'user_id' =>request()->user_id
-                
-        //     ]);
-        //     return to_route(route: 'posts.index');
-        // } 
-       
-
-        // //smae as store (step-3)
-        //  //insted of using $_POST 
-        // 
-        // $data = request()->all();
-        // $UserPost['title'] = ;
-        // $description = $data['description'];
-        // $userid = $data['posted_by'];
-        // $users = User::get();
-        
         $data = request()->all(); 
+
+        if($request->hasFile('image')) {
+            Storage::delete($UserPost->image_path);
+            $postImage = $request->file('image');
+            $image_path = $postImage->store('images');
+            $UserPost->image_path = $image_path;
+        }elseif(isset($request->delete_image)) {
+            Storage::delete($UserPost->image_path);
+            $image_path = '';
+            $UserPost->image_path = $image_path;
+        }       
+
         $UserPost->title = $data['title'];
         $UserPost->description = $data['description'];
         $UserPost->user_id =$data['posted_by'];
         $UserPost->save();
 
-        // $data = request()->all(); 
-        // $UserPost->title = request()->title;
-        // $UserPost->description = request()->description;
-        // $UserPost->user_id = request()->posted_by;
-        // $UserPost->save();
-
-        // $title = request()->title;
-        // $UserPost->title = $title;
-        // $UserPost->save();
-            // $description = request()->description;
-
-            // $data = request()->all(); //insted of using $_POST 
-            // $title = $data['title'];
-            // $description = $data['description'];
-            // $userid = $data['posted_by'];
-
-            // Post::save([
-            //     'title' => $title,
-            //     'description'=> $description,
-            //     'user_id'=>$userid,
-            // ]);
-
-
-        // $title = request()->title;
-        // $description = request()->description;
-        // $userid = request()->userid;
-        //step 2: store(save) the form data in DB... 
-        // $postId -> update([
-        //     'title' => $title,
-        //     'description'=> $description,
-        //     'user_id'=>$userid,
-        // ]);
         return to_route(route: 'posts.index');
     }
 
     //7.destroy to delete specific record using id
     public function destroy($postId)
     {
-
-      
-        
-
-
-
         $UserPost = Post::find($postId); 
     
+        
+        $postComments = Comment::where('post_id', $postId)->get();
+        $postComments->each->delete();
+
+        // Storage::delete($UserPost->image_path);
         $UserPost -> delete();
         return to_route('posts.index' , [
             'confirmation' => $UserPost

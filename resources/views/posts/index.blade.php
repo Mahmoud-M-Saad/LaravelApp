@@ -14,7 +14,7 @@
                     <th scope="col">Title</th>
                     <th scope="col">Posted by</th>
                     <th scope="col">Date of creation</th>
-                    <!-- <th scope="col">Mail Status</th> -->
+                    <th scope="col">Updated from</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
@@ -30,7 +30,8 @@
                     <th>#{{$post['id']}}</th>
                     <td>{{$post['title']}}</td>
                     <td>{{$post->user?->name}}</td> 
-                    <td>{{$post['created_at']}}</td>
+                    <td>{{$post['created_at']->format('l h:ia (j-M-Y)')}}</td>
+                    <td>{{$post->updated_at->diffForHumans()}}</td>
                     <td>                        
                     <form action="{{ route('posts.destroy',$post['id']) }}" method="POST">
                        <a class="btn btn-primary" style="width: 34px; height:30px; padding:0px;" href="{{route('posts.show', $post['id'])}}">
@@ -58,5 +59,9 @@
                 @endforeach
             </tbody>
         </table>
+        {{-- @foreach ($post->comments as $comment) {
+            // ...
+        }
+        @endforeach --}}
         <div class="pagination justify-content-center">{{ $posts->links() }}</div>    
         @endsection
